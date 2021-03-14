@@ -7,7 +7,7 @@ _domain = 'https://letterboxd.com/'
 def scrape_list(list_link):
     
     film_rows = []
-    film_rows.append(['Film_name', 'Release_year', 'Letterboxd URL'])
+    film_rows.append(['Film_title', 'Release_year', 'Letterboxd URL'])
     
     while True:
         list_page = requests.get(list_link)
@@ -39,8 +39,6 @@ def scrape_list(list_link):
             film_soup = BeautifulSoup(filmget.content, 'html.parser')
             
             release_year = film_soup.find('meta', attrs={'property':'og:title'}).attrs['content'][-5:-1]
-
-            #film_list.append([film_name + ' (' + release_year + ')' + ' - ' + _domain + film_card)
 
             film_rows.append([film_name, int(release_year), _domain+film_card])
             
