@@ -14,20 +14,12 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm.
 
 ### Executing program
 
-* Run the program by running `main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/). After some time a CSV file will be outputted containing your data.
+* Run the program by running ` python main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/). After some time a CSV file will be outputted containing your data.
 
 
 ## Authors
 
 Arno Lafontaine  
-
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
 
 ## Acknowledgments
 
