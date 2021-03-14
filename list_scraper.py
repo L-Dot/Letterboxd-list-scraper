@@ -7,7 +7,7 @@ _domain = 'https://letterboxd.com/'
 def scrape_list(list_link):
     
     film_rows = []
-    film_rows.append(['Film_name', 'Release_year', 'Letterboxd URL'])
+    film_rows.append(['Film_title', 'Release_year', 'Director', 'Average_rating','Letterboxd URL'])
     
     while True:
         list_page = requests.get(list_link)
@@ -31,18 +31,18 @@ def scrape_list(list_link):
             
             panel = film.find('div').find('img')
             film_name = panel['alt']
-            print(film_name)
-            # Obtaining release year of movie
+            
+            # Obtaining release year, director and average rating of the movie
             film_card = film.find('div').get('data-target-link')
             film_page = _domain + film_card
             filmget = requests.get(film_page)
             film_soup = BeautifulSoup(filmget.content, 'html.parser')
             
             release_year = film_soup.find('meta', attrs={'property':'og:title'}).attrs['content'][-5:-1]
+            director = film_soup.find('meta', attrs={'name':'twitter:data1'}).attrs['content']
+            average_rating = float(film_soup.find('meta', attrs={'name':'twitter:data2'}).attrs['content'][:4])
 
-            #film_list.append([film_name + ' (' + release_year + ')' + ' - ' + _domain + film_card)
-
-            film_rows.append([film_name, int(release_year), _domain+film_card])
+            film_rows.append([film_name, int(release_year), director, average_rating, _domain+film_card])
             
         # check if there is another page of ratings
         next_button = soup.find('a', class_='next')
