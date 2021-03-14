@@ -2,42 +2,26 @@
 
 A tool for scraping Letterboxd lists from a simple URL. The ouput is a CSV file with film titles, release year and a link to the Letterboxd page. The current version is tested on watchlists and normal lists.
 
-## Description
-
-
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+Requires python 3.x, BeautifulSoup (bs4) and tqdm.
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* Copy over the repository and work in there.
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
+* Run the program by running `main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/).
 
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
 
 ## Authors
 
 Contributors names and contact info
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+ex. Arno Lafontaine  
 
 ## Version History
 
@@ -47,8 +31,6 @@ ex. [@DomPizzie](https://twitter.com/dompizzie)
 * 0.1
     * Initial Release
 
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
 ## Acknowledgments
+
+Thanks to BBotml for the inspiration for this project https://github.com/BBottoml/Letterboxd-friend-ranker.
