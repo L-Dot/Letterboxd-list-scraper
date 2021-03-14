@@ -6,7 +6,7 @@ A tool for scraping Letterboxd lists from a simple URL. The ouput is a CSV file 
 
 ### Dependencies
 
-Requires python 3.x, BeautifulSoup (bs4), requests and tqdm.
+Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm.
 
 ### Installing
 
