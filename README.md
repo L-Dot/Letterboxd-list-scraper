@@ -19,9 +19,7 @@ Requires python 3.x, BeautifulSoup (bs4) and tqdm.
 
 ## Authors
 
-Contributors names and contact info
-
-ex. Arno Lafontaine  
+Arno Lafontaine  
 
 ## Version History
 
