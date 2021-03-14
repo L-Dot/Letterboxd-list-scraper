@@ -48,7 +48,7 @@ def scrape_list(list_link):
             except:
                 average_rating = np.nan
 
-            film_rows.append([film_name, int(release_year), director, average_rating, _domain+film_card])
+            film_rows.append([film_name, release_year, director, average_rating, _domain+film_card])
             
         # check if there is another page of ratings
         next_button = soup.find('a', class_='next')
