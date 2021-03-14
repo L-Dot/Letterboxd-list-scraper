@@ -1,6 +1,6 @@
 # Letterboxd-list-scraper
 
-A tool for scraping Letterboxd lists from a simple URL. The ouput is a CSV file with film titles, release year, director, average rating and a link to the Letterboxd page. The current version is tested on watchlists and normal lists.
+A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, average rating and a link to the Letterboxd page. The current version is tested on watchlists and normal lists.
 
 ## Getting Started
 
