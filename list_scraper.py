@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from tqdm import tqdm
+import numpy as np
 
 _domain = 'https://letterboxd.com/'
 
@@ -40,7 +41,12 @@ def scrape_list(list_link):
             
             release_year = film_soup.find('meta', attrs={'property':'og:title'}).attrs['content'][-5:-1]
             director = film_soup.find('meta', attrs={'name':'twitter:data1'}).attrs['content']
-            average_rating = float(film_soup.find('meta', attrs={'name':'twitter:data2'}).attrs['content'][:4])
+            
+            # try to find average rating, if not insert a nan
+            try:
+                average_rating = float(film_soup.find('meta', attrs={'name':'twitter:data2'}).attrs['content'][:4])
+            except:
+                average_rating = np.nan
 
             film_rows.append([film_name, int(release_year), director, average_rating, _domain+film_card])
             
