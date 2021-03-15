@@ -14,7 +14,7 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm.
 
 ### Executing program
 
-* Run the program by running ` python main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/). After some time a CSV file will be outputted containing your data.
+* Run the program by running ` python main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/). After some time a CSV file will be outputted containing your data. See `imdb-top-250.csv` for a preview.
 
 * Use the script `cast_reader.py` to read-in the 'Cast' column from the CSV files to proper python lists.
 
@@ -24,6 +24,7 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm.
 
 * Create a way that user can choose to request only specific data and not all.
 
+* Add feature that scrapes how many times a movie has been given a specific rating.
 
 ## Authors
 
