@@ -1,6 +1,6 @@
 # Letterboxd-list-scraper
 
-A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, average rating and a link to the Letterboxd page. The current version is tested on watchlists and normal lists.
+A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, cast, average rating and a link to the Letterboxd page. The current version is tested on watchlists and normal lists.
 
 ## Getting Started
 
@@ -15,6 +15,8 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm.
 ### Executing program
 
 * Run the program by running ` python main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/). After some time a CSV file will be outputted containing your data.
+
+* Use the script `cast_reader.py` to read-in the 'Cast' column from the CSV files to proper python lists.
 
 
 ## Authors
