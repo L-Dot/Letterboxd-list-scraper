@@ -1,0 +1,4 @@
+Pip*
+*.ui
+.vscode
+__pycache__
