@@ -19,10 +19,9 @@ def scrape_list(list_link):
         
         # check to see page was downloaded correctly
         if list_page.status_code != 200:
-            encounter_error("")
+            return print("Error: Could not load page")
 
-        soup = BeautifulSoup(list_page.content, 'html.parser')
-        # browser.get(following_url)
+        soup = BeautifulSoup(list_page.content, 'lxml')
         
         # grab the main film grid
         table = soup.find('ul', class_='poster-list')
