@@ -13,8 +13,8 @@ def scrape_list(list_link):
     """
     
     film_rows = []
-    film_rows.append(['Film_title', 'Release_year', 'Director', 'Cast', 'Personal_rating', 'Average_rating','Letterboxd URL'])
-    
+    film_rows.append(['Film_title', 'Release_year', 'Director', 'Genres', 'Personal_rating', 'Average_rating', 'Runtime', "Watches", "Likes" 'Cast', 'Letterboxd URL'])
+
     while True:
         list_page = requests.get(list_link)
         
