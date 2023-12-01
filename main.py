@@ -24,7 +24,7 @@ def main():
             exit()
             
         # if a watchlist proceed this way
-        elif list_url.split('/')[-3] != 'list':
+        elif list_url.split('/')[-4] != 'list':
             try:
                 list_name = list_url.split('/')[-2]
                 username = list_url.split('/')[-3]
@@ -36,7 +36,7 @@ def main():
                 continue
         
         # if a list proceed this way
-        elif list_url.split('/')[-3] == 'list':
+        elif list_url.split('/')[-4] == 'list':
             try:
                 # Changed to -3 because could only get personal rating if using detail view
                 list_name = list_url.split('/')[-3]
