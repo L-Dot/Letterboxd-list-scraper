@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from tqdm import tqdm
 import numpy as np
+import re
 
 _domain = 'https://letterboxd.com/'
 
@@ -12,17 +13,16 @@ def scrape_list(list_link):
     """
     
     film_rows = []
-    film_rows.append(['Film_title', 'Release_year', 'Director', 'Cast', 'Personal_rating', 'Average_rating','Letterboxd URL'])
-    
+    film_rows.append(['Film_title', 'Release_year', 'Director', 'Genres', 'Personal_rating', 'Average_rating', 'Runtime', "Watches", "Likes" 'Cast', 'Letterboxd URL'])
+
     while True:
         list_page = requests.get(list_link)
         
         # check to see page was downloaded correctly
         if list_page.status_code != 200:
-            encounter_error("")
+            return print("Error: Could not load page")
 
-        soup = BeautifulSoup(list_page.content, 'html.parser')
-        # browser.get(following_url)
+        soup = BeautifulSoup(list_page.content, 'lxml')
         
         # grab the main film grid
         table = soup.find('ul', class_='poster-list')
@@ -70,7 +70,38 @@ def scrape_list(list_link):
             except:
                 average_rating = np.nan
 
-            film_rows.append([film_name, release_year, director, cast, rating, average_rating, _domain+film_card])
+            # Scrape movie genres
+            genres = film_soup.find('div', {'class': 'text-sluglist capitalize'})
+            genres = [genres.text for genres in genres.find_all('a', {'class': 'text-slug'})]
+
+            # Get movie runtime by searching for first sequence of digits in the p element with the runtime
+            runtime = int(re.search(r'\d+', film_soup.find('p', {'class': 'text-link text-footer'}).text).group())
+
+            # In order to get stats on how many people watched/liked the movie, need to use new link
+
+            # This grabs the name of the movie as it appears in the url
+            movie = film_page.split('/')[-2]
+            # This goes to the page with the desired stats for the movie
+            r = requests.get(f'https://letterboxd.com/esi/film/{movie}//stats/')
+            stats_soup = BeautifulSoup(r.content, 'lxml')
+
+            # Get number of people that have watched the movie
+            # Grab the full "Watched by X members" string
+            watches = stats_soup.find('a', {'class': 'has-icon icon-watched icon-16 tooltip'})["title"]
+            # Filters above message to only grab the number portion
+            watches = re.findall(r'\d+', watches)
+            # Numbers are separated by the comma, join them back together to get actual count
+            watches = int(''.join(watches))
+
+            # Get number of people that have liked the movie
+            # Grab the full "Liked by X members" string
+            likes = stats_soup.find('a', {'class': 'has-icon icon-like icon-liked icon-16 tooltip'})["title"]
+            # Filters above message to only grab the number portion
+            likes = re.findall(r'\d+', likes)
+            # Numbers are separated by the comma, join them back together to get actual count
+            likes = int(''.join(likes))
+
+            film_rows.append([film_name, release_year, director, genres, rating, average_rating, runtime, watches, likes, cast, film_page])
             
         # check if there is another page of ratings
         next_button = soup.find('a', class_='next')
