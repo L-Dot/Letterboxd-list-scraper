@@ -6,7 +6,7 @@ A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file
 
 ### Dependencies
 
-Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm.
+Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dependencies are not met you can install everything needed using ` pip install -r requirements.txt` (ideally in a clean virtual environment).
 
 ### Installing
 
@@ -14,17 +14,8 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm.
 
 ### Executing program
 
-* Run the program by running ` python main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/detail/). After some time a CSV file will be outputted containing your data. See `imdb-top-250.csv` for a preview.
-* The detailed version of the list (same url but with /detail on the end) should be used or personal ratings may not be scraped.
-* Use the script `cast_reader.py` to read-in the 'Cast' column from the CSV files to proper python lists.
-
-## TODO
-
-* Create a list identifier to identify if the input URL contains a watchlist, personal films list, or normal list and let the code behave accordingly (e.g. no rating scraping for a watchlist).
-
-* Create a way that user can choose to request only specific data and not all.
-
-* Add feature that scrapes how many times a movie has been given a specific rating.
+* Run the program by running ` python main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/). After some time a CSV file will be outputted containing your data. See `imdb-top-250.csv` for a preview.
+* (Optional) Use the script `cast_reader.py` to read-in the 'Cast' column from the CSV files to proper python lists.
 
 ## Authors
 

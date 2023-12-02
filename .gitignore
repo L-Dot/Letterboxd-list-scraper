@@ -1,4 +1,5 @@
 Pip*
 *.ui
+*.csv
 .vscode
 __pycache__

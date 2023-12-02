@@ -18,13 +18,13 @@ def main():
     # Checking if URL is of a watchlist or of a list
     while True:
         list_url = input('Enter the URL of the list you wish to scrape:')
-        
+
         # exit option
         if list_url == 'q' or list_url == 'quit':
             exit()
             
         # if a watchlist proceed this way
-        elif list_url.split('/')[-4] != 'list':
+        elif list_url.split('/')[-2] == 'watchlist':
             try:
                 list_name = list_url.split('/')[-2]
                 username = list_url.split('/')[-3]
@@ -32,19 +32,19 @@ def main():
                 break
 
             except:
-                print('That is not a valid URL, please try again.')
+                print('That is not a valid list URL, please try again.')
                 continue
         
         # if a list proceed this way
-        elif list_url.split('/')[-4] == 'list':
+        elif list_url.split('/')[-3] == 'list':
             try:
-                # Changed to -3 because could only get personal rating if using detail view
-                list_name = list_url.split('/')[-3]
+                list_name = list_url.split('/')[-2]
+                list_url = list_url + '/detail/'            # Adding detail to URL access the personal rating later
                 current_list = List(list_name, list_url)
                 break
 
             except:
-                print('That is not a valid URL, please try again.')
+                print('That is not a valid list URL, please try again.')
                 continue
     
     # writing to a CSV file
