@@ -6,7 +6,7 @@ A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file
 
 ### Dependencies
 
-Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dependencies are not met you can install everything needed using ` pip install -r requirements.txt` (ideally in a clean virtual environment).
+Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dependencies are not met you can install everything needed using `pip install -r requirements.txt` (ideally in a clean virtual environment).
 
 ### Installing
 
@@ -14,7 +14,7 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dep
 
 ### Executing program
 
-* Run the program by running ` python main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/). After some time a CSV file will be outputted containing your data. See `imdb-top-250.csv` for a preview.
+* Run the program by running `python main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/). After some time a CSV file will be outputted containing your data. See `imdb-top-250.csv` for a preview.
 * (Optional) Use the script `cast_reader.py` to read-in the 'Cast' column from the CSV files to proper python lists.
 
 ## Authors
