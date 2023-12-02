@@ -20,6 +20,7 @@ A summary of the added features is given below:
     - Original language.
     - Spoken languages.
     - Owner rating (i.e. the rating that the owner of the list gave the film).
+   
 These additions were mostly inspired by users in issue [#2](https://github.com/L-Dot/Letterboxd-list-scraper/issues/2).
  
 ### Changed
