@@ -19,10 +19,11 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dep
 
 ## TO-DO
 
-* Create a way that user can choose to request only specific data columns and not all.
+* Add option such that only particular pages of very long lists can be scraped (e.g. only the first 10).
 * Add options for output (CSV, json, txt).
 * Add feature that scrapes how many times a movie has been given a specific rating.
-
+* Add more user-specific features (top 4, diary, watched, etc.)?
+  
 ## Authors
 
 Arno Lafontaine  
