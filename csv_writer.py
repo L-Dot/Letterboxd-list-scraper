@@ -8,7 +8,7 @@ def list_to_csv(film_rows, list_name):
     """
     
     with open(f'{list_name}.csv', 'w', newline="", encoding = "utf-8") as f:
-        write = csv.writer(f, delimiter=";")
+        write = csv.writer(f, delimiter=",")
 
         write.writerows(film_rows)
         
