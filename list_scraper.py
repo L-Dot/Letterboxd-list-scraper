@@ -164,6 +164,3 @@ def transform_stars(starstring):
         return stars[starstring]
     except:
         return np.nan
-    
-if __name__=='__main__':
-    print(scrape_list('https://letterboxd.com/bjornbork/list/favoriete-fillempies/'))
