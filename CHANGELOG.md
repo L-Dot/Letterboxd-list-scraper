@@ -29,4 +29,3 @@ These additions were mostly inspired by users in issue [#2](https://github.com/L
 ### Fixed
 - Some changes suggested in issue [#1](https://github.com/L-Dot/Letterboxd-list-scraper/issues/1):
     - UnicodeEncodeError was resolved by using `utf-8` encoding when writing the CSV.
-    - New CSV files use the delimiter of `;` as some movies have a `,` in the title.
