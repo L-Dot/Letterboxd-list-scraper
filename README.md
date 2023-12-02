@@ -1,6 +1,6 @@
 # Letterboxd-list-scraper
 
-A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, cast, rating (only available for personal film lists), average rating and a link to the Letterboxd page. The current version is tested on watchlists and normal lists. The current scrape rate is about 1.3 seconds per film.
+A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, cast, rating (only available for personal film lists), average rating and a whole lot more. The current version is tested on watchlists and normal lists. The current scrape rate is about 1.3 seconds per film.
 
 ## Getting Started
 
