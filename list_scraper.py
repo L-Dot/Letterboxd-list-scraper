@@ -47,7 +47,7 @@ def scrape_list(list_link):
                 owner_rating = np.nan
             
             # Obtaining release year, director, cast and average rating of the movie
-            film_card = film.find('div').get('data-target-link')
+            film_card = film.find('div').get('data-target-link')[1:]
             film_page = _domain + film_card
             filmget = requests.get(film_page)
             film_soup = BeautifulSoup(filmget.content, 'html.parser')

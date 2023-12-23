@@ -14,7 +14,9 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dep
 
 ### Executing program
 
-* Run the program by running `python main.py` and inputting a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/). After some time a CSV file will be outputted containing your data. See `imdb-top-250.csv` for a preview.
+* Run the program by running `python main.py` 
+* If a target_lists.txt exists with rows in the format "letterboxd_list_url,filename_stub" (e.g. "https://letterboxd.com/bjornbork/list/het-huis-anubis/ Anubis"), each row will be scraped (i.e. Anubis.csv will be created in ScrapedCSVs)
+* If target_lists.txt doesn't exist, you'll be prompted to input a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/) and it will be scraped (i.e. het-huis-anubis.csv will be created in ScrapedCSVs)
 * (Optional) Use the script `cast_reader.py` to read-in the 'Cast' column from the CSV files to proper python lists.
 
 ## TO-DO
