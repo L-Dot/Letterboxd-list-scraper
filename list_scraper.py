@@ -14,7 +14,7 @@ def scrape_list(list_link):
     
     film_rows = []
     film_rows.append(['Film_title', 'Release_year', 'Director', 'Genres', 'Owner_rating', 'Average_rating', 'Runtime', 'Countries', 
-                      'Original_Language', 'Spoken_Languages', 'Watches', 'List_Appearances', 'Likes', 'Cast', 'Studios', 'Letterboxd URL'])
+                      'Original_Language', 'Spoken_Languages', 'Cast', 'Studios', 'Letterboxd URL'])
 
     while True:
         list_page = requests.get(list_link)
@@ -112,28 +112,29 @@ def scrape_list(list_link):
             except:
                 studios = np.nan
 
-            ## Getting number of watches, appearances in lists and number of likes (requires new link) ##
-            movie = film_page.split('/')[-2]                                        # Movie title in URL
-            r = requests.get(f'https://letterboxd.com/esi/film/{movie}//stats/')    # Stats page of said movie
-            stats_soup = BeautifulSoup(r.content, 'lxml')
+            # !! Currently not working since the stats page no longer exists
+            ## Getting number of watches, appearances in lists and number of likes (requires new link) ## 
+            # movie = film_page.split('/')[-2]                                        # Movie title in URL
+            # r = requests.get(f'https://letterboxd.com/esi/film/{movie}//stats/')    # Stats page of said movie
+            # stats_soup = BeautifulSoup(r.content, 'lxml')
 
-            # Get number of people that have watched the movie
-            watches = stats_soup.find('a', {'class': 'has-icon icon-watched icon-16 tooltip'})["title"]
-            watches = re.findall(r'\d+', watches)    # Find the number from string
-            watches = int(''.join(watches))          # Filter out commas from large numbers
+            # # Get number of people that have watched the movie
+            # watches = stats_soup.find('a', {'class': 'has-icon icon-watched icon-16 tooltip'})["title"]
+            # watches = re.findall(r'\d+', watches)    # Find the number from string
+            # watches = int(''.join(watches))          # Filter out commas from large numbers
 
-            # Get number of film appearances in lists
-            list_appearances = stats_soup.find('a', {'class': 'has-icon icon-list icon-16 tooltip'})["title"]
-            list_appearances = re.findall(r'\d+', list_appearances) 
-            list_appearances = int(''.join(list_appearances))
+            # # Get number of film appearances in lists
+            # list_appearances = stats_soup.find('a', {'class': 'has-icon icon-list icon-16 tooltip'})["title"]
+            # list_appearances = re.findall(r'\d+', list_appearances) 
+            # list_appearances = int(''.join(list_appearances))
 
-            # Get number of people that have liked the movie
-            likes = stats_soup.find('a', {'class': 'has-icon icon-like icon-liked icon-16 tooltip'})["title"]
-            likes = re.findall(r'\d+', likes)
-            likes = int(''.join(likes))
+            # # Get number of people that have liked the movie
+            # likes = stats_soup.find('a', {'class': 'has-icon icon-like icon-liked icon-16 tooltip'})["title"]
+            # likes = re.findall(r'\d+', likes)
+            # likes = int(''.join(likes))
 
             film_rows.append([film_name, release_year, director, genres, owner_rating, average_rating, runtime, countries, 
-                              og_language, languages, watches, list_appearances, likes, cast, studios, film_page])
+                              og_language, languages, cast, studios, film_page])
             
         # check if there is another page of ratings
         next_button = soup.find('a', class_='next')
