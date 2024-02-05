@@ -1,3 +1,6 @@
-https://letterboxd.com/dave/list/imdb-top-250/,imdb250
-https://letterboxd.com/dave/list/official-top-250-narrative-feature-films/,LB250
-https://letterboxd.com/matthew/list/box-office-mojo-all-time-worldwide/
+#-p 3~20,9,20 -on testie https://letterboxd.com/dave/list/imdb-top-250/
+#-p "<10" -on kippenbot https://letterboxd.com/dave/list/official-top-250-narrative-feature-films/
+#https://letterboxd.com/matthew/list/box-office-mojo-all-time-worldwide/
+#https://letterboxd.com/bjornbork/list/mijn-2023-ranked/
+-on bjorn -p 1 https://letterboxd.com/bjornbork/watchlist/
+--concat https://letterboxd.com/oscars/list/the-96th-academy-award-nominees-for-best-4/

@@ -28,13 +28,13 @@ def checkextract_url(url_string):
         elif url_chunks[4] == "watchlist":
             type = "watchlist"
             username = url_chunks[3]
-            listname = f"{username.lower()}-{url_chunks[4]}"
+            listname = f"{username.lower()}-watchlist"
             check = True
 
         elif url_chunks[4] == "films":
             type = "films"
             username = url_chunks[3]
-            listname = url_chunks[5]
+            listname = f"{username.lower()}-films"
             check = True
         
         # Letterboxd site lists
@@ -54,26 +54,43 @@ def checkextract_url(url_string):
     
     return check, type, username, listname
 
-def checkextract_outputname(output_name, global_output_name, listname, url_total, url_count):
+def checkextract_outputname(output_name, global_output_name, listname, url_total, url_count, concat):
     """ 
-    Finds the appropriate output name for the list.
+    Checks if valid output names are given, then finds the appropriate output name for the list.
+
+    Returns:
+        check (bool):   Check for if the output name is valid.
+        name (str):     The output name for the list.
     """
 
-    if output_name == None:
+    # Checks for if concat was applied
+    # print(len(global_output_name))
+    if concat and global_output_name:
         check = True
-        name = listname + ".csv"
-    elif output_name != global_output_name:
+        name = global_output_name + ".csv" 
+        return check, name
+    elif concat and (global_output_name == None):
         check = True
-        name = output_name + ".csv"
-    elif (output_name != None) and (url_total == 1):
-        check = True
-        name = output_name[0] + ".csv"
-    elif (output_name != None) and (url_total > 1):
-        check = True
-        name = output_name[0] + f"_{url_count - 1}.csv"
+        name = "concatenated.csv" 
+        return check, name
     else:
-        check = False
-        name = ""
+
+        # Checks if concat was not applied
+        if output_name == None:
+            check = True
+            name = listname + ".csv"
+        elif output_name != global_output_name:
+            check = True
+            name = output_name + ".csv"
+        elif (output_name != None) and (url_total == 1):
+            check = True
+            name = output_name + ".csv"
+        elif (output_name != None) and (url_total > 1):
+            check = True
+            name = output_name + f"_{url_count - 1}.csv"
+        else:
+            check = False
+            name = ""
     
     return check, name
 
@@ -114,7 +131,6 @@ def checkextract_pages(pages_string):
                 j = chunk.split("<")[1]
                 print(j)
                 final_pages.extend(range(1,int(j)))
-
             else:
                 final_pages.append(int(chunk))
 

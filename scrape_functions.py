@@ -6,7 +6,7 @@ import re
 
 _domain = 'https://letterboxd.com/'
 
-def scrape_list(list_link, page_options, verbose_off=False):
+def scrape_list(list_link, page_options, verbose_off=False, concat=False):
     """
     Scrapes a Letterboxd list. Takes into account any page flags.
 
@@ -14,19 +14,25 @@ def scrape_list(list_link, page_options, verbose_off=False):
         list_link (str):         The URL link of the first page of the LB list.
         page_options (str/list): Either a "*" to scrape all pages, or a list with specific page integers.
         verbose_off (bool):      Option to turn-off tqdm (not much increased speed noticed. Default is off.)
+        concat (bool):           If set true it will add an extra column with the original list name to the scraped data.
 
     Returns:
         film_rows (list):        A list of lists where each row contains information on the films in the LB list.
     """
 
     film_rows = []
-    film_rows.append(['Film_title', 'Release_year', 'Director', 'Genres', 'Owner_rating', 'Average_rating', 'Runtime', 
-                      'Watches', 'List_Appearances', 'Likes', 'Countries', 'Original_Language', 'Spoken_Languages', 
-                      'Cast', 'Studios', 'Letterboxd URL'])
+    if not concat:
+        film_rows.append(['Film_title', 'Release_year', 'Director', 'Genres', 'Owner_rating', 'Average_rating', 'Runtime', 
+                        'Watches', 'List_Appearances', 'Likes', 'Countries', 'Original_Language', 'Spoken_Languages', 
+                        'Cast', 'Studios', 'Film_URL'])
+    elif concat:
+        film_rows.append(['Film_title', 'Release_year', 'Director', 'Genres', 'Owner_rating', 'Average_rating', 'Runtime', 
+                'Watches', 'List_Appearances', 'Likes', 'Countries', 'Original_Language', 'Spoken_Languages', 
+                'Cast', 'Studios', 'Film_URL', 'List_URL'])
 
     if (page_options == []) or (page_options == "*"):
         while True:
-            film_rows_page, soup = scrape_page(list_link, verbose_off)
+            film_rows_page, soup = scrape_page(list_link, verbose_off, concat)
             film_rows.extend(film_rows_page)
 
             # check if there is another page of ratings and continue if yes
@@ -41,7 +47,7 @@ def scrape_list(list_link, page_options, verbose_off=False):
             new_link = list_link + f"page/{p}/"
             
             try:
-                film_rows_page, soup = scrape_page(new_link, verbose_off)
+                film_rows_page, soup = scrape_page(new_link, verbose_off, concat)
                 film_rows.extend(film_rows_page)
             except:
                 print(f"        No films on page {p}...")
@@ -49,7 +55,7 @@ def scrape_list(list_link, page_options, verbose_off=False):
 
     return film_rows
 
-def scrape_page(list_link, verbose_off=False):
+def scrape_page(list_link, verbose_off=False, concat=False):
     """
     Scrapes the page of a LB list URL, finds all its films and iterates over each film URL
     to find the relevant information.
@@ -57,6 +63,7 @@ def scrape_page(list_link, verbose_off=False):
     Parameters:
         list_link (str):        Link of the LB page that should be scraped.
         verbose_off (bool):     Option to turn-off tqdm.
+        concat (bool):          Checks if concat is enabled.
 
     Returns:
         film_rows_page (list):  List of lists containing information on each film on the LB page.
@@ -192,8 +199,25 @@ def scrape_page(list_link, verbose_off=False):
         likes = re.findall(r'\d+', likes)
         likes = int(''.join(likes))
 
-        film_rows_page.append([film_name, release_year, director, genres, owner_rating, average_rating, runtime, 
-                            watches, list_appearances, likes, countries, og_language, languages, cast, studios, film_page])
+        # Getting info on rating histogram (requires new link)
+        r = requests.get(f'https://letterboxd.com/csi/film/{movie}/rating-histogram/')    # Rating histogram page of said movie
+        stats_soup = BeautifulSoup(r.content, 'lxml')
+
+        watches = stats_soup.find('a', {'class': 'has-icon icon-watched icon-16 tooltip'})["title"]
+        watches = re.findall(r'\d+', watches)    # Find the number from string
+        watches = int(''.join(watches))          # Filter out commas from large numbers
+
+
+
+
+
+        if not concat:
+            film_rows_page.append([film_name, release_year, director, genres, owner_rating, average_rating, runtime, 
+                    watches, list_appearances, likes, countries, og_language, languages, cast, studios, film_page])
+        elif concat:
+            film_rows_page.append([film_name, release_year, director, genres, owner_rating, average_rating, runtime, 
+                    watches, list_appearances, likes, countries, og_language, languages, cast, studios, film_page, list_link])
+ 
         
     return film_rows_page, soup
 

@@ -1,4 +1,4 @@
-from list_scraper import *
+from scrape_functions import scrape_list
 import check_and_extract_functions as cef
 import sys
 import csv
@@ -17,10 +17,12 @@ class List:
         url_count (int):            The number of the current list.
 
     Methods:
-        scrape():   Starts scraping the list from Letterboxd.
+        scrape():               Starts scraping the list from Letterboxd.
+        write_to_csv():         Writes the objects's films to a CSV.
+        scrape_and_write():     Wrapper function to both scrape and write out to CSV.
     """
     
-    def __init__(self, list_url, pagestring, output_name, global_output_name, url_total, url_count):
+    def __init__(self, list_url, pagestring, output_name, global_output_name, url_total, url_count, concat):
         """
         Constructs necessary attributes of the list object.
 
@@ -47,7 +49,7 @@ class List:
             sys.exit(f"     {self.url} is not a valid list URL. Please try again!")
 
         # (-on) output name check
-        outputnamecheck, self.output_name = cef.checkextract_outputname(output_name, global_output_name, self.listname, url_total, url_count)
+        outputnamecheck, self.output_name = cef.checkextract_outputname(output_name, global_output_name, self.listname, url_total, url_count, concat)
         if not outputnamecheck:
             sys.exit(f"    Incorrect output name(s) were given. Please check and try again.")       
 
@@ -55,8 +57,6 @@ class List:
         pagecheck, self.page_options = cef.checkextract_pages(self.pagestring)
         if not pagecheck:
             sys.exit(f"    The input syntax of the pages (-p flag) was not correct. Please try again!")
-            
-        # (-vo) input check
 
         ## Summary of all properties before scraping starts
         print(f"    url:         {self.url}")
@@ -65,28 +65,39 @@ class List:
         print(f"    page_select: {self.pagestring}")
         print(f"    output_name: {self.output_name}\n")
 
+    def scrape(self, verbose_off, concat):
+        """
+        Scrapes the Letterboxd list by using the List object's URL
+        and stores information on each film in a new attribute.
 
-    def scrape(self, verbose_off):
+        Attribute:
+            films (list):   The list of films with all scraped information.
+        """
 
         print(f"    Scraping {self.url}...")
-        self.films = scrape_list(self.url, self.page_options, verbose_off)
-
-        return
+        self.films = scrape_list(self.url, self.page_options, verbose_off, concat)
 
     def write_to_csv(self, output_path):
+        """
+        Writes the films of the List object to a CSV file.
+        """
 
-        # create dir if necessary
-        os.makedirs(output_path, exist_ok=True)
-        outpath = os.path.join(output_path, self.output_name)
+        if len(self.films) == 1:
+            return print(f"        No films found to write out for list {self.listname}. Please try a different selection.")
 
-        with open(outpath, 'w', newline="", encoding = "utf-8") as f:
-            write = csv.writer(f, delimiter=",")
-            write.writerows(self.films)
+        else:
+            outpath = os.path.join(output_path, self.output_name)
+            with open(outpath, 'w', newline="", encoding = "utf-8") as f:
+                write = csv.writer(f, delimiter=",")
+                write.writerows(self.films)
         
-        return print(f"    Written to {self.output_name}!")
+            return print(f"    Written to {self.output_name}!")
     
 
-    def scrape_and_write(self, output_path, verbose_off):
+    def scrape_and_write(self, output_path, verbose_off, concat):
+        """
+        Function to initiate scraping from URL and writing to CSV of the LB list.
+        """
 
-        self.scrape(verbose_off)
+        self.scrape(verbose_off, concat)
         self.write_to_csv(output_path)
