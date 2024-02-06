@@ -1,5 +1,5 @@
 from scrape_functions import scrape_list
-import check_and_extract_functions as cef
+import checkimport_functions as cef
 import sys
 import csv
 import os
@@ -44,17 +44,17 @@ class List:
         print(f"Checking inputs for URL {url_count}/{url_total}...")
 
         # URL input check
-        urlcheck, self.type, self.username, self.listname = cef.checkextract_url(self.url)
+        urlcheck, self.type, self.username, self.listname = cef.checkimport_url(self.url)
         if not urlcheck:
             sys.exit(f"     {self.url} is not a valid list URL. Please try again!")
 
         # (-on) output name check
-        outputnamecheck, self.output_name = cef.checkextract_outputname(output_name, global_output_name, self.listname, url_total, url_count, concat)
+        outputnamecheck, self.output_name = cef.checkimport_outputname(output_name, global_output_name, self.listname, url_total, url_count, concat)
         if not outputnamecheck:
             sys.exit(f"    Incorrect output name(s) were given. Please check and try again.")       
 
         # (-p) pages syntax check
-        pagecheck, self.page_options = cef.checkextract_pages(self.pagestring)
+        pagecheck, self.page_options = cef.checkimport_pages(self.pagestring)
         if not pagecheck:
             sys.exit(f"    The input syntax of the pages (-p flag) was not correct. Please try again!")
 
@@ -86,9 +86,12 @@ class List:
             return print(f"        No films found to write out for list {self.listname}. Please try a different selection.")
 
         else:
+            header = list( self.films[0].keys() )
             outpath = os.path.join(output_path, self.output_name)
+
             with open(outpath, 'w', newline="", encoding = "utf-8") as f:
-                write = csv.writer(f, delimiter=",")
+                write = csv.DictWriter(f, delimiter=",", fieldnames=header)
+                write.writeheader()
                 write.writerows(self.films)
         
             return print(f"    Written to {self.output_name}!")
