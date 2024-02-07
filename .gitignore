@@ -2,5 +2,5 @@ Pip*
 *.ui
 .vscode
 __pycache__
-Layout
-*.csv
+.venv
+scraper_outputs

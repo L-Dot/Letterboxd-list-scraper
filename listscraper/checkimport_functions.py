@@ -1,9 +1,9 @@
-# This file contains functions that checks the user-input and, if deemed valid, extracts the relevant information
+# This file contains functions that checks the user-input and, if deemed valid, imports the relevant information
 # If user-input is not valid, a relevant error message is generated and printed 
 
-def checkextract_url(url_string):
+def checkimport_url(url_string):
     """
-    Checks the input URL for correct syntax and extracts relevant list information.
+    Checks the input URL for correct syntax and imports relevant list information.
 
         Parameters:
             url_string (str):   The input URL.
@@ -37,12 +37,12 @@ def checkextract_url(url_string):
             listname = f"{username.lower()}-films"
             check = True
         
-        # Letterboxd site lists
-        elif url_chunks[3] == "films":
+        # Letterboxd site generic lists
+        elif url_chunks[3] == "films" and len(url_chunks) > 5:
             type = "LBfilms"
+            username = "Letterboxd"
+            listname = "LBfilms"
             check = True
-
-            ### UNDER CONSTRUCTION
 
         else:
             check = False
@@ -51,10 +51,23 @@ def checkextract_url(url_string):
     except:
         check = False
         type, username, listname = ['']*3
-    
+
+    # Check for additional selection in URL and add it to the list output name
+    if (type in {"list"} and len(url_chunks) > 7):
+        extra_chunks = url_chunks[6:-1]
+        listname = listname + "-" + ("-").join(extra_chunks)
+
+    elif (type in {"watchlist", "films"} and len(url_chunks) > 6):
+        extra_chunks = url_chunks[5:-1]
+        listname = listname + "-" + ("-").join(extra_chunks)
+        
+    elif (type in {"LBfilms"}):
+        extra_chunks = url_chunks[4:-1]
+        listname = listname + "-" + ("-").join(extra_chunks)
+
     return check, type, username, listname
 
-def checkextract_outputname(output_name, global_output_name, listname, url_total, url_count, concat):
+def checkimport_outputname(output_name, global_output_name, listname, url_total, url_count, concat):
     """ 
     Checks if valid output names are given, then finds the appropriate output name for the list.
 
@@ -64,7 +77,6 @@ def checkextract_outputname(output_name, global_output_name, listname, url_total
     """
 
     # Checks for if concat was applied
-    # print(len(global_output_name))
     if concat and global_output_name:
         check = True
         name = global_output_name + ".csv" 
@@ -94,11 +106,10 @@ def checkextract_outputname(output_name, global_output_name, listname, url_total
     
     return check, name
 
-
-def checkextract_pages(pages_string):
+def checkimport_pages(pages_string):
     """
-    Checks the input string for correct syntax and extracts
-    a list of all the pages that should be scraped.
+    Checks the input string for correct syntax and converts to
+    a list of integers representing all the pages that should be scraped.
 
         Parameters:
             pages_string (str): The input after the "-p" flag

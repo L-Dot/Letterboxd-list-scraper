@@ -1,6 +1,11 @@
 # Letterboxd-list-scraper
 
-A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, cast, rating (only available for personal film lists), average rating and a whole lot more. The current version is tested on watchlists and normal lists. The current scrape rate is about 1.3 seconds per film.
+A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, cast, owner rating, average rating and a whole lot more (see example CSVs in `/example_output/`). Version 2.0.0 supports the scraping of:
+    - Lists (e.g. `https://letterboxd.com/bjornbork/list/het-huis-anubis/`)
+    - Watchlists (e.g. `https://letterboxd.com/joelhaver/watchlist/`)
+    - User films (e.g. `https://letterboxd.com/mscorsese/films/`)
+    - Generic Letterboxd films (e.g. `https://letterboxd.com/films/popular/this/week/genre/documentary/`)
+The current scrape rate is about 1.2 films per second. Multiple lists will be concurrently scraped using separate CPU threads (default max of 4 threads, but this is configurable).
 
 ## Getting Started
 
@@ -14,17 +19,32 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dep
 
 ### Executing program
 
-* Run the program by running `python main.py` 
-* If a target_lists.txt exists with rows in the format "letterboxd_list_url,filename_stub" (e.g. "https://letterboxd.com/bjornbork/list/het-huis-anubis/ Anubis"), each row will be scraped (i.e. Anubis.csv will be created in ScrapedCSVs)
-* If target_lists.txt doesn't exist, you'll be prompted to input a valid URL (e.g. https://letterboxd.com/bjornbork/list/het-huis-anubis/) and it will be scraped (i.e. het-huis-anubis.csv will be created in ScrapedCSVs)
-* (Optional) Use the script `cast_reader.py` to read-in the 'Cast' column from the CSV files to proper python lists.
+* Run the program by running `python -m listscraper [options] [list-url]` in the project directory. 
+
+    Multiple list URLs can be provided, separated by a space. The output CSV(s) can then be found in the (newly generated) folder (`/scraper_outputs/`).
+
+    Some of the optional flags are:
+    - `-p` or `--pages` can be used to select specific pages.
+    - `-on` or `--output-name` can be used to give the output CSV(s) a user-specified name.
+    - `-f` or `--file` can be used to import a .txt file with multiple list URLs that should be scraped.
+    - `-op` or `--output-path` can be used to write the output CSV(s) to a desired directory.
+    - `--concat` will concatenate all films of the given lists and output them in a single CSV.
+
+> [!NOTE]
+> Please use `python -m listscraper --help` for a full list of all available flags.
+
+> [!TIP]
+> Scraping multiple lists is most easily done by running `python -m listscraper -f <file>` with a custom .txt file that contains the URL on each newline. Each newline can take unique `-p` and `-on` optional flags.
+
+* (Optional) The function `cast_reader()` in `utility_functions.py` can be used to read-in the 'Cast' column from the CSV files to proper Python lists.
 
 ## TO-DO
 
-* Add option such that only particular pages of very long lists can be scraped (e.g. only the first 10).
 * Add options for output (CSV, json, txt).
-* Add feature that scrapes how many times a movie has been given a specific rating.
-* Add more user-specific features (top 4, diary, watched, etc.)?
+* Add scrape functionality for user top 4 and diary.
+* Add `-u <username>` flag that scrapes the diary, top 4, films and lists of a single user.
+* Add a `--meta-data` flag to print original list name, scrape date, username above CSV header.
+* Optimize thread usage to increase scrape speed.
   
 ## Authors
 

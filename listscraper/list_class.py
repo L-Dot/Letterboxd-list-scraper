@@ -1,5 +1,5 @@
-from scrape_functions import scrape_list
-import checkimport_functions as cef
+from listscraper.scrape_functions import scrape_list
+import listscraper.checkimport_functions as cef
 import sys
 import csv
 import os
@@ -65,7 +65,7 @@ class List:
         print(f"    page_select: {self.pagestring}")
         print(f"    output_name: {self.output_name}\n")
 
-    def scrape(self, verbose_off, concat):
+    def scrape(self, quiet, concat):
         """
         Scrapes the Letterboxd list by using the List object's URL
         and stores information on each film in a new attribute.
@@ -75,7 +75,14 @@ class List:
         """
 
         print(f"    Scraping {self.url}...")
-        self.films = scrape_list(self.url, self.page_options, verbose_off, concat)
+
+        # If list is of generic LB site, URL should be slightly altered
+        if self.type == "LBfilms":
+            scrape_url = "films/ajax".join(self.url.split("films"))         # 'ajax' is inserted
+        else:
+            scrape_url = self.url
+
+        self.films = scrape_list(scrape_url, self.page_options, quiet, concat)
 
     def write_to_csv(self, output_path):
         """
@@ -97,10 +104,10 @@ class List:
             return print(f"    Written to {self.output_name}!")
     
 
-    def scrape_and_write(self, output_path, verbose_off, concat):
+    def scrape_and_write(self, output_path, quiet, concat):
         """
         Function to initiate scraping from URL and writing to CSV of the LB list.
         """
 
-        self.scrape(verbose_off, concat)
+        self.scrape(quiet, concat)
         self.write_to_csv(output_path)
