@@ -26,7 +26,7 @@ If other dependencies are not met you can install everything needed using `pip i
 
 ### Installing
 
-* Copy over the repository and work in there.
+* Clone the repository and work in there.
 
 ### Executing program
 
