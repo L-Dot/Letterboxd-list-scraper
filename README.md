@@ -46,7 +46,7 @@ If other dependencies are not met you can install everything needed using `pip i
 > [!TIP]
 > Scraping multiple lists is most easily done by running `python -m listscraper -f <file>` with a custom .txt file that contains the URL on each newline. Each newline can take unique `-p` and `-on` optional flags. For an example of such a file please see `target_lists.txt`.
 
-## TO-DO
+## TODO
 
 * Add options for output (CSV, json, txt).
 * Add scrape functionality for user top 4 and diary.
