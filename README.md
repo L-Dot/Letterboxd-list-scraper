@@ -32,8 +32,6 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dep
     - `-op` or `--output-path` can be used to write the output CSV(s) to a desired directory.
     - `--concat` will concatenate all films of the given lists and output them in a single CSV.
 
-* (Optional) The function `cast_reader()` in `utility_functions.py` can be used to read-in the 'Cast' column from the CSV files to proper Python lists.
-
 > [!NOTE]
 > Please use `python -m listscraper --help` for a full list of all available flags including extensive descriptions on how to use them.
 

@@ -43,7 +43,6 @@ All notable changes to this project will be documented in this file.
 
     - (new) `utility_functions.py`
         Contains small amount of utility functions.
-    - `cast_reader.py` -> `utility_functions.py`
 
     - (new) `checkimport_functions.py`
         Contains functions that check the input options and extract/import the relevant information.
