@@ -3,18 +3,26 @@
 A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, cast, owner rating, average rating and a whole lot more (see example CSVs in `/example_output/`). 
 
 Version v2.0.0 supports the scraping of:
-- Lists (e.g. `https://letterboxd.com/bjornbork/list/het-huis-anubis/`)
-- Watchlists (e.g. `https://letterboxd.com/joelhaver/watchlist/`)
-- User films (e.g. `https://letterboxd.com/mscorsese/films/`)
-- Generic Letterboxd films (e.g. `https://letterboxd.com/films/popular/this/week/genre/documentary/`)
+- **Lists** (e.g. `https://letterboxd.com/bjornbork/list/het-huis-anubis/`)
+- **Watchlists** (e.g. `https://letterboxd.com/joelhaver/watchlist/`)
+- **User films** (e.g. `https://letterboxd.com/mscorsese/films/`)
+- **Generic Letterboxd films** (e.g. `https://letterboxd.com/films/popular/this/week/genre/documentary/`)
 
-The current scrape rate is about 1.2 films per second. Multiple lists will be concurrently scraped using separate CPU threads (default max of 4 threads, but this is configurable).
+The current scrape rate is about 1.2 films per second. Multiple lists can be concurrently scraped using separate CPU threads (default max of 4 threads, but this is configurable).
 
 ## Getting Started
 
 ### Dependencies
 
-Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dependencies are not met you can install everything needed using `pip install -r requirements.txt` (ideally in a clean virtual environment).
+Requires:
+- python 3.x
+- numpy
+- BeautifulSoup (bs4)
+- requests
+- tqdm
+- **lxml**
+
+If other dependencies are not met you can install everything needed using `pip install -r requirements.txt` (ideally in a clean virtual environment).
 
 ### Installing
 
@@ -22,7 +30,7 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dep
 
 ### Executing program
 
-* Run the program by running `python -m listscraper [options] [list-url]` in the project directory. 
+* Execute the program by running `python -m listscraper [options] [list-url]` on the command line in the project directory. 
 
     Multiple list URLs can be provided, separated by a space. The output CSV(s) can then be found in the folder `/scraper_outputs/`, which will be created if not already present.
     Some of the optional flags are:
@@ -36,7 +44,7 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dep
 > Please use `python -m listscraper --help` for a full list of all available flags including extensive descriptions on how to use them.
 
 > [!TIP]
-> Scraping multiple lists is most easily done by running `python -m listscraper -f <file>` with a custom .txt file that contains the URL on each newline. Each newline can take unique `-p` and `-on` optional flags.
+> Scraping multiple lists is most easily done by running `python -m listscraper -f <file>` with a custom .txt file that contains the URL on each newline. Each newline can take unique `-p` and `-on` optional flags. For an example of such a file please see `target_lists.txt`.
 
 ## TO-DO
 
