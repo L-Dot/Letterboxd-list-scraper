@@ -56,7 +56,8 @@ def scrape_page(list_url, og_list_url, quiet=False, concat=False):
 
     Parameters:
         list_url (str):         Link of the LB page that should be scraped.
-        quiet (bool):     Option to turn-off tqdm.
+        og_list_url (str):      The original input list URL (without any "/page/" strings added)
+        quiet (bool):           Option to turn-off tqdm.
         concat (bool):          Checks if concat is enabled.
 
     Returns:
@@ -108,9 +109,6 @@ def scrape_film(film_html):
     """
     
     film_dict = {}
-    
-    # Finding the film name
-    film_dict["Film_title"] = film_html.find('div').find('img')['alt']
 
     # Obtaining release year, director and average rating of the movie
     film_card = film_html.find('div').get('data-target-link')[1:]
@@ -118,6 +116,9 @@ def scrape_film(film_html):
     filmget = requests.get(film_url)
     film_soup = BeautifulSoup(filmget.content, 'html.parser')
 
+    # Finding the film name
+    film_dict["Film_title"] = film_soup.find("div", {"class" : "col-17"}).find("h1").text
+    
     # Try to find release year, if missing or 0 insert nan
     release_year = int(str(film_soup.find_all("script")).split("releaseYear: ")[1].split(",")[0].strip("\""))
     if release_year == 0:
