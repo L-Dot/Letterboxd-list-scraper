@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
     See the full overview of all flags by running `python -m listscraper --help`. 
 
 - More scrape data! For each film the program now also scrapes:
-    - Fan count (rounded off to whole thousands because of the 'K' notation LB uses).
+    - Fan count (rounded off to whole hundreds because of the 'K' notation LB uses).
     - Total ratings amount.
     - Rating count of all histogram bars (i.e. how many times people rated ½, ★, ★½, etc.).
 
