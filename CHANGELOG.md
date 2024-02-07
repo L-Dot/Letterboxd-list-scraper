@@ -3,14 +3,6 @@ All notable changes to this project will be documented in this file.
 
 ## [2.0.0] - 2023-02-06
 
--
-This update comes with a full overhaul of the Letterboxd-list-scraper into a more interactive and functional Command Line Interface (CLI). This was done by implementing `argparse` together with a load of optional flags that can be provided along with the URL.
-
-This overhaul has resulted in the code becoming a lot longer and more complicated in some parts. I have tried to keep a good readability by providing logical function and variable names and a lot of comments and docstrings. While I have done a lot of manual testing, I still expect a lot of new bugs to occur. Please do inform me on these if you find them. A near-future goal of mine is to add test functions and structure the code in a way more in line to the general rules of software applications.
-
-In the meantime I hope you can enjoy and use the new 2.0.0 version of this program!
--
-
 ### Added
 - The program can now be run via `python -m listscraper <list-URL>`. This is the simplest case, but multiple optional flags were added for functionality. Some of these flags are:
     - `--pages` can be used to select specific pages.
