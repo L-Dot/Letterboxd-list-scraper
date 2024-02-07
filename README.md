@@ -1,10 +1,13 @@
 # Letterboxd-list-scraper
 
-A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, cast, owner rating, average rating and a whole lot more (see example CSVs in `/example_output/`). Version 2.0.0 supports the scraping of:
-    - Lists (e.g. `https://letterboxd.com/bjornbork/list/het-huis-anubis/`)
-    - Watchlists (e.g. `https://letterboxd.com/joelhaver/watchlist/`)
-    - User films (e.g. `https://letterboxd.com/mscorsese/films/`)
-    - Generic Letterboxd films (e.g. `https://letterboxd.com/films/popular/this/week/genre/documentary/`)
+A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, cast, owner rating, average rating and a whole lot more (see example CSVs in `/example_output/`). 
+
+Version v2.0.0 supports the scraping of:
+- Lists (e.g. `https://letterboxd.com/bjornbork/list/het-huis-anubis/`)
+- Watchlists (e.g. `https://letterboxd.com/joelhaver/watchlist/`)
+- User films (e.g. `https://letterboxd.com/mscorsese/films/`)
+- Generic Letterboxd films (e.g. `https://letterboxd.com/films/popular/this/week/genre/documentary/`)
+
 The current scrape rate is about 1.2 films per second. Multiple lists will be concurrently scraped using separate CPU threads (default max of 4 threads, but this is configurable).
 
 ## Getting Started
@@ -21,8 +24,7 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dep
 
 * Run the program by running `python -m listscraper [options] [list-url]` in the project directory. 
 
-    Multiple list URLs can be provided, separated by a space. The output CSV(s) can then be found in the (newly generated) folder (`/scraper_outputs/`).
-
+    Multiple list URLs can be provided, separated by a space. The output CSV(s) can then be found in the folder `/scraper_outputs/`, which will be created if not already present.
     Some of the optional flags are:
     - `-p` or `--pages` can be used to select specific pages.
     - `-on` or `--output-name` can be used to give the output CSV(s) a user-specified name.
@@ -30,13 +32,13 @@ Requires python 3.x, numpy, BeautifulSoup (bs4), requests and tqdm. If other dep
     - `-op` or `--output-path` can be used to write the output CSV(s) to a desired directory.
     - `--concat` will concatenate all films of the given lists and output them in a single CSV.
 
+* (Optional) The function `cast_reader()` in `utility_functions.py` can be used to read-in the 'Cast' column from the CSV files to proper Python lists.
+
 > [!NOTE]
-> Please use `python -m listscraper --help` for a full list of all available flags.
+> Please use `python -m listscraper --help` for a full list of all available flags including extensive descriptions on how to use them.
 
 > [!TIP]
 > Scraping multiple lists is most easily done by running `python -m listscraper -f <file>` with a custom .txt file that contains the URL on each newline. Each newline can take unique `-p` and `-on` optional flags.
-
-* (Optional) The function `cast_reader()` in `utility_functions.py` can be used to read-in the 'Cast' column from the CSV files to proper Python lists.
 
 ## TO-DO
 
