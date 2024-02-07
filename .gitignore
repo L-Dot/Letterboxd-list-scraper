@@ -4,3 +4,4 @@ Pip*
 __pycache__
 .venv
 scraper_outputs
+.DS_Store
