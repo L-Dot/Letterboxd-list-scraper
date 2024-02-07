@@ -32,22 +32,17 @@ All notable changes to this project will be documented in this file.
 - Updated the README to reflect changes.
 
 - Changed some filenames (=>), moved functions (->) and/or added new modules (new) for better project organization:
-    - `main.py` => `__main__.py`
+    - `main.py` => `__main__.py` <br>
         The initiator script of the program was renamed and altered for cleaner code.
-    
-    - (new) `instance_class.py`
+    - `list_scraper.py` => `scrape_functions.py` <br>
+       File was renamed and now contains all functions related specifically to the scraping procedure.
+    - (new) `instance_class.py` <br>
         Contains the main program code. Actualizes the program as a class instance which is useful for storing information.
-
-    - `list_scraper.py` => `scrape_functions.py`
-        New file contains all functions related specifically to the scraping procedure.
-
-    - (new) `utility_functions.py`
-        Contains small amount of utility functions.
-
-    - (new) `checkimport_functions.py`
-        Contains functions that check the input options and extract/import the relevant information.
-    
-    - (new) `cli.py`
+    - (new) `utility_functions.py` <br>
+        Contains small utility functions.
+    - (new) `checkimport_functions.py` <br>
+        Contains functions that check the input arguments and extract/import the relevant information.
+    - (new) `cli.py` <br>
         Contains all code regarding the command line interface argument parser.
 
 - In actuality a huge amount of changes in the overall code (too much to list here), but the general working of the scraper has stayed exactly the same.
