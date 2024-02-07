@@ -49,7 +49,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Fixed an issue with scraping the stats page (watches, likes, list additions) in [#6](https://github.com/L-Dot/Letterboxd-list-scraper/issues/6) by changing the page URL (the page was not deleted luckily).
-
+- Fixed an issue with not scraping some film title's correctly as mentioned by @BeSweets in [#2](https://github.com/L-Dot/Letterboxd-list-scraper/issues/2).
 
 ## [1.1.0] - 2023-12-02
 
