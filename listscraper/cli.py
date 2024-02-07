@@ -16,7 +16,7 @@ def cli_arguments():
 
     parser.add_argument("-on", "--output_name", type=str,
                         help=("set the filename of the output CSV(s). Default output is a CSV file with the same name as its respective list.\n"
-                              "If multiple URLs are provided, each CSV will be the concatenation of the filename with an increasing number _1, _2, etc.\n"), 
+                              "If this flag is used and multiple URLs are provided, each CSV will be the concatenation of the output name with an increasing number _1, _2, etc.\n"), 
                         required=False, default=None)
     
     parser.add_argument("-op", "--output_path", type=str, 
