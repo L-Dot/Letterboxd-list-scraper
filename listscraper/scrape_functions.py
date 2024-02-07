@@ -14,7 +14,7 @@ def scrape_list(list_url, page_options, quiet=False, concat=False):
     Parameters:
         list_url (str):          The URL link of the first page of the LB list.
         page_options (str/list): Either a "*" to scrape all pages, or a list with specific page integers.
-        quiet (bool):      Option to turn-off tqdm (not much increased speed noticed. Default is off.)
+        quiet (bool):            Option to turn-off tqdm (not much increased speed noticed. Default is off.)
         concat (bool):           If set true it will add an extra column with the original list name to the scraped data.
 
     Returns:
