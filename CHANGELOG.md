@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2023-02-06
 
 ### Added
-- The program can now be run via `python -m listscraper <list-URL>`. This is the simplest case, but multiple optional flags were added for functionality. Some of these flags are:
+- The program can now be run on the command line via `python -m listscraper <list-URL>`. This is the simplest case, but multiple optional flags were added for functionality. Some of these flags are:
     - `--pages` can be used to select specific pages.
     - `--output-name` can be used to give the output CSV(s) a user-specified name.
     - `--file` can be used to import a .txt file with multiple list URLs that should be scraped. Each URL can have its own optional `--pages` and/or `--output-name` flags.
