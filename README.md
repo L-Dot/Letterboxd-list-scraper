@@ -14,15 +14,9 @@ The current scrape rate is about 1.2 films per second. Multiple lists can be con
 
 ### Dependencies
 
-Requires:
-- python 3.x
-- numpy
-- BeautifulSoup (bs4)
-- requests
-- tqdm
-- **lxml**
+Requires Python 3.x, numpy, BeautifulSoup (bs4), requests, tqdm and **lxml**.
 
-If other dependencies are not met you can install everything needed using `pip install -r requirements.txt` (ideally in a clean virtual environment).
+If dependencies are not met it is recommended to install everything needed in one go using `pip install -r requirements.txt` (ideally in a clean virtual environment).
 
 ### Installing
 
