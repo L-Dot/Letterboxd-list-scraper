@@ -47,7 +47,7 @@ If other dependencies are not met you can install everything needed using `pip i
 > Scraping multiple lists is most easily done by running `python -m listscraper -f <file>` with a custom .txt file that contains the URL on each newline. Each newline can take unique `-p` and `-on` optional flags. For an example of such a file please see `target_lists.txt`.
 
 > [!IMPORTANT]
-> Program currently does not support the scraping of extremely long generic Letterboxd pages (e.g. `https://letterboxd.com/films/popular/this/week/genre/documentary/`, which contains ~152000 films)
+> Program currently does not support the scraping of extremely long generic Letterboxd pages (e.g. `https://letterboxd.com/films/popular/this/week/genre/documentary/`, which contains ~152000 films). To circumvent this, please use the `-p` flag to make a smaller page selection.
 
 ## TODO
 
