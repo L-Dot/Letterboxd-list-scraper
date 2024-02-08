@@ -46,6 +46,9 @@ If other dependencies are not met you can install everything needed using `pip i
 > [!TIP]
 > Scraping multiple lists is most easily done by running `python -m listscraper -f <file>` with a custom .txt file that contains the URL on each newline. Each newline can take unique `-p` and `-on` optional flags. For an example of such a file please see `target_lists.txt`.
 
+> [!IMPORTANT]
+> Program currently does not support the scraping of extremely long generic Letterboxd pages (e.g. `https://letterboxd.com/films/popular/this/week/genre/documentary/`, which contains ~152000 films)
+
 ## TODO
 
 * Add options for output (CSV, json, txt).
@@ -53,7 +56,8 @@ If other dependencies are not met you can install everything needed using `pip i
 * Add `-u <username>` flag that scrapes the diary, top 4, films and lists of a single user.
 * Add a `--meta-data` flag to print original list name, scrape date, username above CSV header.
 * Optimize thread usage to increase scrape speed.
-  
+
+
 ## Authors
 
 Arno Lafontaine  
