@@ -1,9 +1,6 @@
 # This is an example list that was imported using `python -m listscraper -f target_lists.txt`. Note that each line can take separate optional flags.
 # The output CSVs of this example run can be seen in the /example_output/ folder.
 
-#https://letterboxd.com/bjornbork/watchlist/decade/2020s/
-#-on lb_top250 https://letterboxd.com/dave/list/official-top-250-narrative-feature-films/
-#-p 1 https://letterboxd.com/films/popular/this/month/
-
-https://letterboxd.com/BjornBork/watchlist/
-https://letterboxd.com/BjornBork/watchlist/
+https://letterboxd.com/bjornbork/watchlist/decade/2020s/
+-on lb_top250 https://letterboxd.com/dave/list/official-top-250-narrative-feature-films/
+-p 1 https://letterboxd.com/films/popular/this/month/
