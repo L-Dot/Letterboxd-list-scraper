@@ -1,9 +1,11 @@
 from listscraper.list_class import List
+import listscraper.checkimport_functions as cef
 import concurrent.futures # for pool of threads
 import time
 import sys
 import os
 import csv
+import json
 
 class ScrapeInstance:
     """
@@ -11,14 +13,15 @@ class ScrapeInstance:
     All attributes are read and saved as variables from the 'argparse' flags of the command line, or from the provided .txt file.
 
     Attributes:
-        inputURLs (list):       A list of URLs input from the command line.
-        pages (str):            Page options read from optional '-p' flag. Default is all pages ('*').
-        output_name (str):      Output name obtained from optional '-on' flag. Default is list name from URL.
-        output_path (str):      Output path obtained from optional '-op' flag. Default is 'scraper_outputs' directory.
-        infile (str):           Name of input .txt file obtained from optional '-f' flag.
-        concat (bool):          Option to turn on list concatenation read from optional '--concat' flag. Default is False.
-        quiet(bool):            Turn off tqdm loading bars read from optional '-vo' flag. Default is False.
-        threads (int):          Amount of threads used for scraping read from optional '--threads' flag. Default is 4. 
+        inputURLs (list):               A list of URLs input from the command line.
+        pages (str):                    Page options read from optional '-p' flag. Default is all pages ('*').
+        output_name (str):              Output name obtained from optional '-on' flag. Default is list name from URL.
+        output_path (str):              Output path obtained from optional '-op' flag. Default is 'scraper_outputs' directory.
+        output_file_extension (str):    Type of file outputted. Default is CSV, ".csv".
+        infile (str):                   Name of input .txt file obtained from optional '-f' flag.
+        concat (bool):                  Option to turn on list concatenation read from optional '--concat' flag. Default is False.
+        quiet(bool):                    Turn off tqdm loading bars read from optional '-vo' flag. Default is False.
+        threads (int):                  Amount of threads used for scraping read from optional '--threads' flag. Default is 4. 
 
     Methods:
         import_from_infile(infile):
@@ -31,7 +34,7 @@ class ScrapeInstance:
             Scrapes all the films from the List objects using their LB link.
     """
 
-    def __init__(self, inputURLs, pages, output_name, output_path, infile, concat, quiet, threads):
+    def __init__(self, inputURLs, pages, output_name, output_path, output_file_extension, infile, concat, quiet, threads):
         """
         Initializes the program by running various checks if input values and syntax were correct.
 
@@ -53,6 +56,10 @@ class ScrapeInstance:
         self.infile = infile
         self.concat = concat
         self.quiet = quiet
+
+        output_file_extension_check, self.output_file_extension = cef.checkimport_output_output_file_extension(output_file_extension)
+        if not output_file_extension_check:
+            sys.exit(f"    Incorrect output file extension was given. Please check and try again.")  
         
         self.Nthreads = threads
         self.starttime = time.time()
@@ -89,7 +96,7 @@ class ScrapeInstance:
 
         print("Initialization successful!\n")
 
-        #=== Scraping and writing to CSV ===#
+        #=== Scraping and writing to file ===#
 
         # Create output dir if necessary
         os.makedirs(self.output_path, exist_ok=True)
@@ -143,7 +150,7 @@ class ScrapeInstance:
             else:
                 output_name = self.global_output_name
 
-            self.lists_to_scrape.append(List(url, page_options, output_name, self.global_output_name,
+            self.lists_to_scrape.append(List(url, page_options, output_name, self.global_output_name, self.output_file_extension, 
                                              self.url_total, self.url_count, self.concat))
             self.url_count += 1
 
@@ -161,7 +168,7 @@ class ScrapeInstance:
         print(f"A total of {self.url_total} URLs were found!\n")
 
         for url in inputURLs:
-            self.lists_to_scrape.append(List(url, self.global_page_options, self.global_output_name, self.global_output_name, 
+            self.lists_to_scrape.append(List(url, self.global_page_options, self.global_output_name, self.global_output_name, self.output_file_extension, 
                                              self.url_total, self.url_count, self.concat))
             self.url_count += 1
 
@@ -179,7 +186,7 @@ class ScrapeInstance:
 
     def scrape_all_and_writeout(self, list_objs, max_workers=4):
         """
-        Starts the scraping of all lists from Letterboxd and subsequently writes out to CSV(s).
+        Starts the scraping of all lists from Letterboxd and subsequently writes out to file(s).
 
             Parameters:
                 target_lists (list):   The collection of List objects that have to be scraped.
@@ -201,16 +208,20 @@ class ScrapeInstance:
 
             self.concatenate_lists()
             
-            # Checks if manual name for concatenated CSV was given, and otherwise uses a default
+            # Checks if manual name for concatenated file was given, and otherwise uses a default
             if self.global_output_name == None:
                 self.global_output_name = "concatenated_lists"
 
             # Write out to path
-            header = list( self.concat_lists[0].keys() )
-            outpath = os.path.join(self.output_path, self.global_output_name + ".csv")
-            with open(outpath, 'w', newline="", encoding = "utf-8") as f:
-                write = csv.DictWriter(f, delimiter=",", fieldnames=header)
-                write.writeheader()
-                write.writerows(self.concat_lists)
+            outpath = os.path.join(self.output_path, self.global_output_name + self.output_file_extension)
+            if self.output_file_extension == ".json":
+                with open(outpath, "w", encoding="utf-8") as jsonf:
+                    jsonf.write(json.dumps(self.concat_lists, indent=4, ensure_ascii=False))
+            else:
+                header = list( self.concat_lists[0].keys() )
+                with open(outpath, 'w', newline="", encoding = "utf-8") as f:
+                    write = csv.DictWriter(f, delimiter=",", fieldnames=header)
+                    write.writeheader()
+                    write.writerows(self.concat_lists)
             
-            return print(f"    Written concatenated lists to {self.global_output_name}.csv!")
+            return print(f"    Written concatenated lists to {self.global_output_name}{self.output_file_extension}!")

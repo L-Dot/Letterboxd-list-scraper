@@ -7,7 +7,7 @@ def cli_arguments():
     """
 
     parser=argparse.ArgumentParser(prog="listscraper", usage="%(prog)s [options] [list-url]",
-                                   description="A Python program that scrapes Letterboxd lists and outputs the information on all of its films in a CSV file. Input form and desired outputs are user customizable. Concurrent scraping of multiple lists is supported.",
+                                   description="A Python program that scrapes Letterboxd lists and outputs the information on all of its films in a file. Input form and desired outputs are user customizable. Concurrent scraping of multiple lists is supported.",
                                    epilog="Thank you for using the scraper! If you have any trouble and/or suggestions please contact me via the GitHub page https://github.com/L-Dot/Letterboxd-list-scraper.",
                                    formatter_class=argparse.RawTextHelpFormatter)
     
@@ -15,13 +15,17 @@ def cli_arguments():
     parser.add_argument('--version', action='version', version='%(prog)s 2.0.0')
 
     parser.add_argument("-on", "--output_name", type=str,
-                        help=("set the filename of the output CSV(s). Default output is a CSV file with the same name as its respective list.\n"
-                              "If this flag is used and multiple URLs are provided, each CSV will be the concatenation of the output name with an increasing number _1, _2, etc.\n"), 
+                        help=("set the filename of the output file(s). Default output is a CSV file with the same name as its respective list.\n"
+                              "If this flag is used and multiple URLs are provided, each file will be the concatenation of the output name with an increasing number _1, _2, etc.\n"), 
                         required=False, default=None)
     
     parser.add_argument("-op", "--output_path", type=str, 
-                        help="set the path for the output CSV(s). Default output is a folder called 'scraper_outputs'.", 
+                        help="set the path for the output file(s). Default output is a folder called 'scraper_outputs'.", 
                         required=False, default="scraper_outputs")
+
+    parser.add_argument("-ofe", "--output_file_extension", type=str,
+                        help="specify output file type, .csv or .json. Default output is .csv.",
+                        required=False, default=".csv")
     
     parser.add_argument("-f", "--file", type=argparse.FileType('r'),
                         help="provide a .txt file with all of the URLs that should be scraped. Each URL should be isolated on its own newline together with any specific option flags. \
@@ -42,7 +46,7 @@ def cli_arguments():
                         required=False, default="*")
 
     parser.add_argument("--concat", action="store_true",
-                        help="option to output all the scraped lists into a single concatenated CSV. An extra column is added that specifies the original list URL.",
+                        help="option to output all the scraped lists into a single concatenated file. An extra column is added that specifies the original list URL.",
                         required=False)
     
     parser.add_argument("--threads", type=int,

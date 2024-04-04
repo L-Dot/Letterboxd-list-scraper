@@ -1,7 +1,6 @@
 # Some utility functions are stored here
-import numpy as np
 
-def stars2val(stars):
+def stars2val(stars, not_found):
     """
     Transforms star rating into float value.
     """
@@ -22,9 +21,9 @@ def stars2val(stars):
         val = conv_dict[stars]
         return val
     except:
-        return np.nan
+        return not_found
     
-def val2stars(val):
+def val2stars(val, not_found):
     """
     Transforms float value into star string.
     """
@@ -43,4 +42,4 @@ def val2stars(val):
         stars = conv_dict[val]
         return stars
     except:
-        return np.nan
+        return not_found

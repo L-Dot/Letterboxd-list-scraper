@@ -1,6 +1,6 @@
 # Letterboxd-list-scraper
 
-A tool for scraping Letterboxd lists from a simple URL. The output is a CSV file with film titles, release year, director, cast, owner rating, average rating and a whole lot more (see example CSVs in `/example_output/`). 
+A tool for scraping Letterboxd lists from a simple URL. The output is a file with film titles, release year, director, cast, owner rating, average rating and a whole lot more (see example CSVs and jsons in `/example_output/`). 
 
 Version v2.0.0 supports the scraping of:
 - **Lists** (e.g. `https://letterboxd.com/bjornbork/list/het-huis-anubis/`)
@@ -26,13 +26,14 @@ If dependencies are not met it is recommended to install everything needed in on
 
 * Execute the program by running `python -m listscraper [options] [list-url]` on the command line in the project directory. 
 
-    Multiple list URLs can be provided, separated by a space. The output CSV(s) can then be found in the folder `/scraper_outputs/`, which will be created if not already present.
+    Multiple list URLs can be provided, separated by a space. The output file(s) can then be found in the folder `/scraper_outputs/`, which will be created if not already present.
     Some of the optional flags are:
     - `-p` or `--pages` can be used to select specific pages.
-    - `-on` or `--output-name` can be used to give the output CSV(s) a user-specified name.
+    - `-on` or `--output-name` can be used to give the output file(s) a user-specified name.
     - `-f` or `--file` can be used to import a .txt file with multiple list URLs that should be scraped.
-    - `-op` or `--output-path` can be used to write the output CSV(s) to a desired directory.
-    - `--concat` will concatenate all films of the given lists and output them in a single CSV.
+    - `-op` or `--output-path` can be used to write the output file(s) to a desired directory.
+    - `-ofe` or `--output-file-extension` can be used to specify what type of file is outputted (support for CSV and json).
+    - `--concat` will concatenate all films of the given lists and output them in a single file.
 
 > [!NOTE]
 > Please use `python -m listscraper --help` for a full list of all available flags including extensive descriptions on how to use them.
@@ -45,7 +46,7 @@ If dependencies are not met it is recommended to install everything needed in on
 
 ## TODO
 
-* Add options for output (CSV, json, txt).
+* Add further options for output, currently supports CSV and json.
 * Add scrape functionality for user top 4 and diary.
 * Add `-u <username>` flag that scrapes the diary, top 4, films and lists of a single user.
 * Add a `--meta-data` flag to print original list name, scrape date, username above CSV header.

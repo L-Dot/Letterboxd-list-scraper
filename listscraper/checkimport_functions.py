@@ -67,7 +67,28 @@ def checkimport_url(url_string):
 
     return check, type, username, listname
 
-def checkimport_outputname(output_name, global_output_name, listname, url_total, url_count, concat):
+def checkimport_output_output_file_extension(output_file_extension):
+    """ 
+    Checks if valid output file extension was given.
+
+    Returns:
+        check (bool):       Check for if the output file extension is valid.
+        extension (str):    The output file extension for the file.
+    """
+
+    if output_file_extension == ".json" or output_file_extension == ".csv":
+        check = True
+        extension = output_file_extension
+    elif output_file_extension == "json" or output_file_extension == "csv":
+        check = True
+        extension = "." + output_file_extension
+    else:
+        check = False
+        extension = None
+
+    return check, extension
+
+def checkimport_outputname(output_name, global_output_name, output_file_extension, listname, url_total, url_count, concat):
     """ 
     Checks if valid output names are given, then finds the appropriate output name for the list.
 
@@ -79,27 +100,27 @@ def checkimport_outputname(output_name, global_output_name, listname, url_total,
     # Checks for if concat was applied
     if concat and global_output_name:
         check = True
-        name = global_output_name + ".csv" 
+        name = global_output_name + output_file_extension
         return check, name
     elif concat and (global_output_name == None):
         check = True
-        name = "concatenated.csv" 
+        name = "concatenated" + output_file_extension
         return check, name
     else:
 
         # Checks if concat was not applied
         if output_name == None:
             check = True
-            name = listname + ".csv"
+            name = listname + output_file_extension
         elif output_name != global_output_name:
             check = True
-            name = output_name + ".csv"
+            name = output_name + output_file_extension
         elif (output_name != None) and (url_total == 1):
             check = True
-            name = output_name + ".csv"
+            name = output_name + output_file_extension
         elif (output_name != None) and (url_total > 1):
             check = True
-            name = output_name + f"_{url_count - 1}.csv"
+            name = output_name + f"_{url_count - 1}" + output_file_extension
         else:
             check = False
             name = ""
