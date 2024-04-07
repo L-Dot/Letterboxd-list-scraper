@@ -14,10 +14,10 @@ def main():
 
     # Importing command line arguments and create a scrape instance
     args = cli_arguments()
-    LBscraper = ScrapeInstance(args.listURL, args.pages, args.output_name, args.output_path, args.file, args.concat, args.quiet, args.threads)
+    LBscraper = ScrapeInstance(args.listURL, args.pages, args.output_name, args.output_path, args.output_file_extension, args.file, args.concat, args.quiet, args.threads)
 
     # # End message
-    print(f"\nProgram successfully finished! Your CSV(s) can be found in ./{LBscraper.output_path}/.")
+    print(f"\nProgram successfully finished! Your {LBscraper.output_file_extension}(s) can be found in ./{LBscraper.output_path}/.")
     print(f"    Total run time was {LBscraper.endtime - LBscraper.starttime :.2f} seconds.")
 
 

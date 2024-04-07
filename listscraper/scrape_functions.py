@@ -7,15 +7,16 @@ import re
 
 _domain = 'https://letterboxd.com/'
 
-def scrape_list(list_url, page_options, quiet=False, concat=False):
+def scrape_list(list_url, page_options, output_file_extension, quiet=False, concat=False):
     """
     Scrapes a Letterboxd list. Takes into account any optional page selection.
 
     Parameters:
-        list_url (str):          The URL link of the first page of the LB list.
-        page_options (str/list): Either a "*" to scrape all pages, or a list with specific page integers.
-        quiet (bool):            Option to turn-off tqdm (not much increased speed noticed. Default is off.)
-        concat (bool):           If set true it will add an extra column with the original list name to the scraped data.
+        list_url (str):                 The URL link of the first page of the LB list.
+        page_options (str/list):        Either a "*" to scrape all pages, or a list with specific page integers.
+        output_file_extension (str):    Type of file extension, for usage in 'scrape_page()'.
+        quiet (bool):                   Option to turn-off tqdm (not much increased speed noticed. Default is off.)
+        concat (bool):                  If set true it will add an extra column with the original list name to the scraped data.
 
     Returns:
         list_films (list):       A list of dicts where each dict contains information on the films in the LB list.
@@ -26,7 +27,7 @@ def scrape_list(list_url, page_options, quiet=False, concat=False):
     # If all pages should be scraped, go through all available pages
     if (page_options == []) or (page_options == "*"):
         while True:
-            page_films, page_soup = scrape_page(list_url, list_url, quiet, concat)
+            page_films, page_soup = scrape_page(list_url, list_url, output_file_extension, quiet, concat)
             list_films.extend(page_films)
 
             # Check if there is another page of ratings and if yes, continue to that page
@@ -41,7 +42,7 @@ def scrape_list(list_url, page_options, quiet=False, concat=False):
         for p in page_options:
             new_link = list_url + f"page/{p}/"
             try:
-                page_films, page_soup = scrape_page(new_link, list_url, quiet, concat)
+                page_films, page_soup = scrape_page(new_link, list_url, output_file_extension, quiet, concat)
                 list_films.extend(page_films)
             except:
                 print(f"        No films on page {p}...")
@@ -49,16 +50,17 @@ def scrape_list(list_url, page_options, quiet=False, concat=False):
     
     return list_films
 
-def scrape_page(list_url, og_list_url, quiet=False, concat=False):
+def scrape_page(list_url, og_list_url, output_file_extension, quiet=False, concat=False):
     """
     Scrapes the page of a LB list URL, finds all its films and iterates over each film URL
     to find the relevant information.
 
     Parameters:
-        list_url (str):         Link of the LB page that should be scraped.
-        og_list_url (str):      The original input list URL (without any "/page/" strings added)
-        quiet (bool):           Option to turn-off tqdm.
-        concat (bool):          Checks if concat is enabled.
+        list_url (str):                 Link of the LB page that should be scraped.
+        og_list_url (str):              The original input list URL (without any "/page/" strings added)
+        output_file_extension (str):    Type of file extension, specifies 'not_found' entry.
+        quiet (bool):                   Option to turn-off tqdm.
+        concat (bool):                  Checks if concat is enabled.
 
     Returns:
         page_films (list):      List of dicts containing information on each film on the LB page.
@@ -83,9 +85,11 @@ def scrape_page(list_url, og_list_url, quiet=False, concat=False):
     if films == []:
         return 
     
+    not_found = np.nan if output_file_extension == ".csv" else None
+    
     # Iterate through films
     for film in films if quiet else tqdm(films):
-        film_dict = scrape_film(film)
+        film_dict = scrape_film(film, not_found)
         
         # Adds an extra column with OG list URL
         if concat:
@@ -95,7 +99,7 @@ def scrape_page(list_url, og_list_url, quiet=False, concat=False):
 
     return page_films, page_soup
         
-def scrape_film(film_html):
+def scrape_film(film_html, not_found):
     """
     Scrapes all available information regarding a film. 
     The function makes multiple request calls to relevant Letterboxd film URLs and gets their raw HTML code.
@@ -122,13 +126,13 @@ def scrape_film(film_html):
     # Try to find release year, if missing or 0 insert nan
     release_year = int(str(film_soup.find_all("script")).split("releaseYear: ")[1].split(",")[0].strip("\""))
     if release_year == 0:
-        release_year = np.nan
+        release_year = not_found
     film_dict["Release_year"] = release_year
 
     # Try to find director, if missing insert nan
     director = film_soup.find('meta', attrs={'name':'twitter:data1'}).attrs['content']
     if director == "":
-        director = np.nan
+        director = not_found
     film_dict["Director"] = director
 
     # Finding the cast, if not found insert a nan
@@ -138,13 +142,13 @@ def scrape_film(film_html):
         # remove all the 'Show All...' tags if they are present
         film_dict["Cast"] = [i for i in cast if i != 'Show All…']
     except:
-        film_dict["Cast"] = np.nan
+        film_dict["Cast"] = not_found
 
     # Finding average rating, if not found insert a nan
     try:
         film_dict["Average_rating"] = float(film_soup.find('meta', attrs={'name':'twitter:data2'}).attrs['content'][:4])
     except:
-        film_dict["Average_rating"] = np.nan
+        film_dict["Average_rating"] = not_found
 
     # Try to find the list owner's rating of a film if possible and converting to float
     try:
@@ -152,35 +156,35 @@ def scrape_film(film_html):
         if stringval != '0':
             film_dict["Owner_rating"] = float(int(stringval)/2)
         else:
-            film_dict["Owner_rating"] = np.nan
+            film_dict["Owner_rating"] = not_found
     except:
         # Extra clause for type 'film' lists
         try:
             starval = film_html.find_all("span")[-1].text
-            film_dict["Owner_rating"] = stars2val(starval)
+            film_dict["Owner_rating"] = stars2val(starval, not_found)
         except:
-            film_dict["Owner_rating"] = np.nan
+            film_dict["Owner_rating"] = not_found
         
     # Finding film's genres, if not found insert nan
     try: 
         genres = film_soup.find('div', {'class': 'text-sluglist capitalize'})
         film_dict["Genres"] = [genres.text for genres in genres.find_all('a', {'class': 'text-slug'})]
     except:
-        film_dict["Genres"] = np.nan
+        film_dict["Genres"] = not_found
 
     # Get movie runtime by searching for first sequence of digits in the p element with the runtime, if not found insert nan
     try: 
         film_dict["Runtime"] = int(re.search(r'\d+', film_soup.find('p', {'class': 'text-link text-footer'}).text).group())
     except:
-        film_dict["Runtime"] = np.nan
+        film_dict["Runtime"] = not_found
 
     # Finding countries
     try:
         film_dict["Countries"] = [ line.contents[0] for line in film_soup.find('div', attrs={'id':'tab-details'}).find_all('a', href=re.compile(r'country'))]
         if film_dict["Countries"] == []:
-            film_dict["Countries"] = np.nan
+            film_dict["Countries"] = not_found
     except:
-        film_dict["Countries"] = np.nan
+        film_dict["Countries"] = not_found
 
     # Finding spoken and original languages
     try:
@@ -189,23 +193,23 @@ def scrape_film(film_html):
         film_dict["Original_language"] = languages[0]                                      # original language (always first)
         film_dict["Spoken_languages"] = list(sorted(set(languages), key=languages.index))   # all unique spoken languages
     except:
-        film_dict["Original_language"] = np.nan
-        film_dict["Spoken_languages"] = np.nan
+        film_dict["Original_language"] = not_found
+        film_dict["Spoken_languages"] = not_found
 
     # !! Currently not working with films that have a comma in their title
     # # Finding alternative titles
     # try:
     #     alternative_titles = film_soup.find('div', attrs={'id':'tab-details'}).find('div', class_="text-indentedlist").text.strip().split(", ")
     # except:
-    #     alternative_titles = np.nan
+    #     alternative_titles = not_found
 
     # Finding studios
     try:
         film_dict["Studios"] = [ line.contents[0] for line in film_soup.find('div', attrs={'id':'tab-details'}).find_all('a', href=re.compile(r'studio'))]
         if film_dict["Studios"] == []:
-            film_dict["Studios"] = np.nan
+            film_dict["Studios"] = not_found
     except:
-        film_dict["Studios"] = np.nan
+        film_dict["Studios"] = not_found
 
     # Getting number of watches, appearances in lists and number of likes (requires new link) ## 
     movie = film_url.split('/')[-2]                                        # Movie title in URL
@@ -250,7 +254,7 @@ def scrape_film(film_html):
     tot_ratings = 0
     for i, r in enumerate(ratings):
         string = r.text.strip(" ")
-        stars = val2stars((i+1)/2)
+        stars = val2stars((i+1)/2, not_found)
         if string == "":
             film_dict[f"{stars}"] = 0
         else:
