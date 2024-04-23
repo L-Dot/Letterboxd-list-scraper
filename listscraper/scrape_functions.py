@@ -252,17 +252,24 @@ def scrape_film(film_html, not_found):
     # Get rating histogram (i.e. how many star ratings were given) and total ratings (sum of rating histogram)
     ratings = hist_soup.find_all("li", {'class': 'rating-histogram-bar'})
     tot_ratings = 0
-    for i, r in enumerate(ratings):
-        string = r.text.strip(" ")
-        stars = val2stars((i+1)/2, not_found)
-        if string == "":
-            film_dict[f"{stars}"] = 0
-        else:
-            Nratings = re.findall(r'\d+', string)[:-1]
-            Nratings = int(''.join(Nratings))
-            film_dict[f"{stars}"] = Nratings
-            tot_ratings += Nratings
+    if len(ratings) != 0:
+        for i, r in enumerate(ratings):
+            string = r.text.strip(" ")
+            stars = val2stars((i+1)/2, not_found)
+            if string == "":
+                film_dict[f"{stars}"] = 0
+            else:
+                Nratings = re.findall(r'\d+', string)[:-1]
+                Nratings = int(''.join(Nratings))
+                film_dict[f"{stars}"] = Nratings
+                tot_ratings += Nratings
 
+    # If the film has not been released yet (i.e. no ratings)
+    else:
+        for i in range(10):
+            stars = val2stars((i+1)/2, not_found)
+            film_dict[f"{stars}"] = 0
+            
     film_dict["Total_ratings"] = tot_ratings
 
     # Thumbnail URL?
