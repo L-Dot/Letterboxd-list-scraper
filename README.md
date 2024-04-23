@@ -1,6 +1,6 @@
 # Letterboxd-list-scraper
 
-A tool for scraping Letterboxd lists from a simple URL. The output is a file with film titles, release year, director, cast, owner rating, average rating and a whole lot more (see example CSVs and jsons in `/example_output/`). 
+A tool for scraping Letterboxd lists from a simple URL. The output is a file with film titles, release year, director, cast, owner rating, average rating and a whole lot more (see example CSVs and JSONs in `/example_output/`). 
 
 Version v2.1.0 supports the scraping of:
 - **Lists** (e.g. `https://letterboxd.com/bjornbork/list/het-huis-anubis/`)
