@@ -1,7 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.0.0] - 2023-02-06
+## [2.1.0] - 2024-04-23
+
+### Added
+- Functionality to export the lists to a JSON file. 
+Added by @jonathanhouge in [#11](https://github.com/L-Dot/Letterboxd-list-scraper/issues/11).
+
+### Fixed
+- A bug that caused incomplete writeout when the first film in the list was an unreleased film (see issue [#8](https://github.com/L-Dot/Letterboxd-list-scraper/issues/8) and issue [#12](https://github.com/L-Dot/Letterboxd-list-scraper/issues/12)).
+
+
+## [2.0.0] - 2024-02-06
 
 ### Added
 - The program can now be run on the command line via `python -m listscraper <list-URL>`. This is the simplest case, but multiple optional flags were added for functionality. Some of these flags are:
