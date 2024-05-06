@@ -7,7 +7,7 @@ import re
 
 _domain = 'https://letterboxd.com/'
 
-def scrape_list(list_url, page_options, output_file_extension, quiet=False, concat=False):
+def scrape_list(list_url, page_options, output_file_extension, list_type, quiet=False, concat=False):
     """
     Scrapes a Letterboxd list. Takes into account any optional page selection.
 
@@ -15,6 +15,7 @@ def scrape_list(list_url, page_options, output_file_extension, quiet=False, conc
         list_url (str):                 The URL link of the first page of the LB list.
         page_options (str/list):        Either a "*" to scrape all pages, or a list with specific page integers.
         output_file_extension (str):    Type of file extension, for usage in 'scrape_page()'.
+        list_type (str):                Type of list to be scraped, for usage in 'scrape_page()'.
         quiet (bool):                   Option to turn-off tqdm (not much increased speed noticed. Default is off.)
         concat (bool):                  If set true it will add an extra column with the original list name to the scraped data.
 
@@ -27,7 +28,7 @@ def scrape_list(list_url, page_options, output_file_extension, quiet=False, conc
     # If all pages should be scraped, go through all available pages
     if (page_options == []) or (page_options == "*"):
         while True:
-            page_films, page_soup = scrape_page(list_url, list_url, output_file_extension, quiet, concat)
+            page_films, page_soup = scrape_page(list_url, list_url, output_file_extension, list_type, quiet, concat)
             list_films.extend(page_films)
 
             # Check if there is another page of ratings and if yes, continue to that page
@@ -42,7 +43,7 @@ def scrape_list(list_url, page_options, output_file_extension, quiet=False, conc
         for p in page_options:
             new_link = list_url + f"page/{p}/"
             try:
-                page_films, page_soup = scrape_page(new_link, list_url, output_file_extension, quiet, concat)
+                page_films, page_soup = scrape_page(new_link, list_url, output_file_extension, list_type, quiet, concat)
                 list_films.extend(page_films)
             except:
                 print(f"        No films on page {p}...")
@@ -50,7 +51,7 @@ def scrape_list(list_url, page_options, output_file_extension, quiet=False, conc
     
     return list_films
 
-def scrape_page(list_url, og_list_url, output_file_extension, quiet=False, concat=False):
+def scrape_page(list_url, og_list_url, output_file_extension, list_type, quiet=False, concat=False):
     """
     Scrapes the page of a LB list URL, finds all its films and iterates over each film URL
     to find the relevant information.
@@ -59,6 +60,7 @@ def scrape_page(list_url, og_list_url, output_file_extension, quiet=False, conca
         list_url (str):                 Link of the LB page that should be scraped.
         og_list_url (str):              The original input list URL (without any "/page/" strings added)
         output_file_extension (str):    Type of file extension, specifies 'not_found' entry.
+        list_type (str):                Type of list, different specifications for different types.
         quiet (bool):                   Option to turn-off tqdm.
         concat (bool):                  Checks if concat is enabled.
 
@@ -77,7 +79,10 @@ def scrape_page(list_url, og_list_url, output_file_extension, quiet=False, conca
     page_soup = BeautifulSoup(page_response.content, 'lxml')
     
     # Grab the main film grid
-    table = page_soup.find('ul', class_='poster-list')
+    if list_type == "Cast/Crew":
+        table = page_soup.find("div", class_="poster-grid")
+    else:
+        table = page_soup.find('ul', class_='poster-list')
     if table is None:
         return
     
@@ -89,6 +94,9 @@ def scrape_page(list_url, og_list_url, output_file_extension, quiet=False, conca
     
     # Iterate through films
     for film in films if quiet else tqdm(films):
+        if list_type == "Cast/Crew" and "poster-container placeholder" in str(film):
+            break  # less than four entries
+
         film_dict = scrape_film(film, not_found)
         
         # Adds an extra column with OG list URL

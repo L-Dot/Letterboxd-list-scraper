@@ -1,5 +1,38 @@
 # This file contains functions that checks the user-input and, if deemed valid, imports the relevant information
-# If user-input is not valid, a relevant error message is generated and printed 
+# If user-input is not valid, a relevant error message is generated and printed
+
+ROLES = [
+    "actor",
+    "additional-directing",
+    "additional-photography",
+    "art-direction",
+    "assistant-director",
+    "camera-operator",
+    "casting",
+    "choreography",
+    "cinematography",
+    "co-director",
+    "composer",
+    "costume-design",
+    "director",
+    "editor",
+    "executive-producer",
+    "hairstyling",
+    "lighting",
+    "makeup",
+    "original-writer",
+    "producer",
+    "production-design",
+    "set-decoration",
+    "songs",
+    "sound",
+    "special-effects",
+    "story",
+    "stunts",
+    "title-design",
+    "visual-effects",
+    "writer",
+]
 
 def checkimport_url(url_string):
     """
@@ -42,6 +75,13 @@ def checkimport_url(url_string):
             type = "LBfilms"
             username = "Letterboxd"
             listname = "LBfilms"
+            check = True
+        
+        # Cast / Crew roles
+        elif url_chunks[3] in ROLES:
+            type = "Cast/Crew"
+            username = "Letterboxd"
+            listname = f"{url_chunks[3]}-{url_chunks[4]}-films"
             check = True
 
         else:
