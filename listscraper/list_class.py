@@ -86,7 +86,7 @@ class List:
         else:
             scrape_url = self.url
 
-        self.films = scrape_list(scrape_url, self.page_options, self.output_file_extension, quiet, concat)
+        self.films = scrape_list(scrape_url, self.page_options, self.output_file_extension, self.type, quiet, concat)
 
     def write_to_file(self, output_path):
         """
