@@ -115,7 +115,7 @@ def scrape_film(film_html, not_found):
     
     Parameters:
         film_html (str):    The raw <li> HTML string of the film object obtained from the list page HTML.
-    
+        not_found (object): Either 'np.nan' if output is CSV or 'None' if output is JSON
     Returns:
         film_dict (dict):   A dictionary containing all the film's information.
     """
@@ -203,6 +203,12 @@ def scrape_film(film_html, not_found):
     except:
         film_dict["Original_language"] = not_found
         film_dict["Spoken_languages"] = not_found
+
+    # Finding the description, if not found insert a nan
+    try:
+        film_dict['Description'] = film_soup.find('meta', attrs={'name' : 'description'}).attrs['content']
+    except:
+        film_dict['Description'] = not_found
 
     # !! Currently not working with films that have a comma in their title
     # # Finding alternative titles
