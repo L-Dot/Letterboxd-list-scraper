@@ -7,6 +7,7 @@ Version v2.2.0 supports the scraping of:
 - **Watchlists** (e.g. `https://letterboxd.com/joelhaver/watchlist/`)
 - **User films** (e.g. `https://letterboxd.com/mscorsese/films/`)
 - **Generic Letterboxd films** (e.g. `https://letterboxd.com/films/popular/this/week/genre/documentary/`)
+- **Roles** (e.g. `https://letterboxd.com/actor/willem-dafoe/`)
 
 The current scrape rate is about 1.2 films per second. Multiple lists can be concurrently scraped using separate CPU threads (default max of 4 threads, but this is configurable).
 
