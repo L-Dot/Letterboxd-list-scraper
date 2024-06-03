@@ -1,6 +1,52 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] - 2024-06-03
+
+### Added
+
+- Functionality to scrape all films from a certain `role` (i.e. person) in Cast/Crew. The input links for these should follow the structure of `https://letterboxd.com/{role}/{name}/` (e.g. https://letterboxd.com/actor/anne-hathaway/). 
+     
+   - A list of the currently available roles includes:
+     ```
+     ROLES = [
+        "actor",
+        "additional-directing",
+        "additional-photography",
+        "art-direction",
+        "assistant-director",
+        "camera-operator",
+        "casting",
+        "choreography",
+        "cinematography",
+        "co-director",
+        "composer",
+        "costume-design",
+        "director",
+        "editor",
+        "executive-producer",
+        "hairstyling",
+        "lighting",
+        "makeup",
+        "original-writer",
+        "producer",
+        "production-design",
+        "set-decoration",
+        "songs",
+        "sound",
+        "special-effects",
+        "story",
+        "stunts",
+        "title-design",
+        "visual-effects",
+        "writer",
+        ]
+    This feature was added by @jonathanhouge in [#13](https://github.com/L-Dot/Letterboxd-list-scraper/pull/13).
+
+  
+- Functionality to scrape the description/synopsis of films, if available. The scraped text is written to the `Description` column. This change was inspired by @meanjoep92 in [#2](https://github.com/L-Dot/Letterboxd-list-scraper/issues/2).
+
+
 ## [2.1.0] - 2024-04-23
 
 ### Added
