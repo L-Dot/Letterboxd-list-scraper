@@ -24,7 +24,7 @@ def cli_arguments():
                         required=False, default="scraper_outputs")
 
     parser.add_argument("-ofe", "--output_file_extension", type=str,
-                        help="specify output file type, .csv or .json. Default output is .csv.",
+                        help="specify output file type, .csv, .xml, or .json. Default output is .csv.",
                         required=False, default=".csv")
     
     parser.add_argument("-f", "--file", type=argparse.FileType('r'),
