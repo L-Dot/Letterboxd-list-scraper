@@ -6,6 +6,7 @@ import sys
 import os
 import csv
 import json
+import xml.etree.ElementTree as ET
 
 class ScrapeInstance:
     """
@@ -217,6 +218,15 @@ class ScrapeInstance:
             if self.output_file_extension == ".json":
                 with open(outpath, "w", encoding="utf-8") as jsonf:
                     jsonf.write(json.dumps(self.concat_lists, indent=4, ensure_ascii=False))
+            elif self.output_file_extension == ".xml":
+                root = ET.Element("Lists")
+                for list_item in self.concat_lists:
+                    list_element = ET.SubElement(root, "List")
+                    for key, value in list_item.items():
+                        item_element = ET.SubElement(list_element, key)
+                        item_element.text = str(value)
+                tree = ET.ElementTree(root)
+                tree.write(outpath, encoding="utf-8", xml_declaration=True)
             else:
                 header = list( self.concat_lists[0].keys() )
                 with open(outpath, 'w', newline="", encoding = "utf-8") as f:

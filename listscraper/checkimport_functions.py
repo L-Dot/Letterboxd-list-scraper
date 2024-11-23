@@ -116,10 +116,10 @@ def checkimport_output_output_file_extension(output_file_extension):
         extension (str):    The output file extension for the file.
     """
 
-    if output_file_extension == ".json" or output_file_extension == ".csv":
+    if output_file_extension == ".json" or output_file_extension == ".csv" or output_file_extension == ".xml":
         check = True
         extension = output_file_extension
-    elif output_file_extension == "json" or output_file_extension == "csv":
+    elif output_file_extension == "json" or output_file_extension == "csv" or output_file_extension == "xml":
         check = True
         extension = "." + output_file_extension
     else:
