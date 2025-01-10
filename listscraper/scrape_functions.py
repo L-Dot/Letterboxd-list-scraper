@@ -132,7 +132,7 @@ def scrape_film(film_html, not_found):
     film_dict["Film_title"] = film_soup.find("div", {"class" : "col-17"}).find("h1").text
     
     # Try to find release year, if missing or 0 insert nan
-    release_year = int(str(film_soup.find_all("script")).split("releaseYear: ")[1].split(",")[0].strip("\""))
+    release_year = int(film_soup.find_all('div', class_='releaseyear')[1].find('a').text.strip())
     if release_year == 0:
         release_year = not_found
     film_dict["Release_year"] = release_year
