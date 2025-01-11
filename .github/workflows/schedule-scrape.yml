@@ -23,7 +23,7 @@ jobs:
 
       - name: Run scraping script
         run: |
-          python -m listscraper -p 1~50 https://letterboxd.com/films/popular/this/year/ --concat
+          python -m listscraper -p 51~100 https://letterboxd.com/films/popular/this/year/ --concat
 
       - name: Commit and push updated data to the repository
         run: |
