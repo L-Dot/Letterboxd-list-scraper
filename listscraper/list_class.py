@@ -4,6 +4,7 @@ import sys
 import csv
 import json
 import os
+import xml.etree.ElementTree as ET
 
 class List:
     """
@@ -100,6 +101,15 @@ class List:
         if self.output_file_extension == ".json":
             with open(outpath, "w", encoding="utf-8") as jsonf:
                 jsonf.write(json.dumps(self.films, indent=4, ensure_ascii=False))
+        elif self.output_file_extension == ".xml":
+            root = ET.Element("Films")
+            for film in self.films:
+                film_element = ET.SubElement(root, "Film")
+                for key, value in film.items():
+                    subelement = ET.SubElement(film_element, key)
+                    subelement.text = str(value)
+            tree = ET.ElementTree(root)
+            tree.write(outpath, encoding="utf-8", xml_declaration=True)
         else:
             header = list( self.films[0].keys() )
             with open(outpath, 'w', newline="", encoding = "utf-8") as f:
