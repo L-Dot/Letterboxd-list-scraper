@@ -131,11 +131,18 @@ def scrape_film(film_html, not_found):
     # Finding the film name
     film_dict["Film_title"] = film_soup.find("div", {"class" : "col-17"}).find("h1").text
     
-    # Try to find release year, if missing or 0 insert nan
-    release_year = int(film_soup.find_all('div', class_='releaseyear')[1].find('a').text.strip())
-    if release_year == 0:
-        release_year = not_found
-    film_dict["Release_year"] = release_year
+    # Try to find release year, handle cases where it's missing
+    try:
+        release_years = film_soup.find_all('div', class_='releaseyear')
+        if len(release_years) > 1:  # Check if we have enough elements
+            year_text = release_years[1].find('a').text.strip()
+            release_year = int(year_text) if year_text else 0
+        else:
+            release_year = 0
+    except (AttributeError, IndexError, ValueError):
+        release_year = 0
+        
+    film_dict["Release_year"] = not_found if release_year == 0 else release_year
 
     # Try to find director, if missing insert nan
     director = film_soup.find('meta', attrs={'name':'twitter:data1'}).attrs['content']
